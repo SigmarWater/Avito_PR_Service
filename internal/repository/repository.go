@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"context"
 	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
 	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
 
 type PullRequestRepository interface {
 	// CreateTeamWithMembers создаёт команду с участниками (создаёт/обновляет пользователей)
-	CreateTeamWithMembers(team *serviceModel.Team) (*repoModel.RepoTeam, error)
+	CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*repoModel.RepoTeam, error)
 
 	// GetTeamWithMembers получает команду с участниками
 	GetTeamWithMembers(teamName string) (*repoModel.RepoTeam, error)
