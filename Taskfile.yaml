@@ -1,0 +1,19 @@
+version: '3'
+vars:
+  BIN_DIR: '{{.ROOT_DIR}}/bin'
+  GOOSE_VERSION: '3.26.0'
+
+  GOOSE: '{{.BIN_DIR}}/goose'
+
+tasks:
+  goose-install:
+    desc: "Устанавливает goose в каталог bin"
+    cmds:
+      - |
+        mkdir -p {{.BIN_DIR}}
+        [ -f {{.GOOSE}} ] || {
+          echo 'Устанавливаем goose {{.GOOSE_VERSION}}...'
+          GOBIN={{.BIN_DIR}} go install github.com/pressly/goose/v3/cmd/goose@v{{.GOOSE_VERSION}}
+        }
+    status:
+      - test -x {{.GOOSE}}
