@@ -11,7 +11,7 @@ type PullRequestRepository interface {
 	CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*repoModel.RepoTeam, error)
 
 	// GetTeamWithMembers получает команду с участниками
-	GetTeamWithMembers(teamName string) (*repoModel.RepoTeam, error)
+	GetTeamWithMembers(ctx context.Context, teamName string) (*repoModel.RepoTeam, error)
 
 	// SetIsActive устанавливает флаг активности пользователя
 	SetIsActive(userId string, isActive bool) (*repoModel.RepoUser, error)
