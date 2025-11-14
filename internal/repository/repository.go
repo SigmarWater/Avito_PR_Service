@@ -14,7 +14,7 @@ type PullRequestRepository interface {
 	GetTeamWithMembers(ctx context.Context, teamName string) (*repoModel.RepoTeam, error)
 
 	// SetIsActive устанавливает флаг активности пользователя
-	SetIsActive(userId string, isActive bool) (*repoModel.RepoUser, error)
+	SetIsActive(ctx context.Context, userId int, isActive bool) (*repoModel.RepoUser, error)
 
 	// GetPullRequestsForUser получает PR'ы, где пользователь назначен ревьювером
 	GetPullRequestsForUser(userId string) (*repoModel.RepoUserWithPullRequests, error)
