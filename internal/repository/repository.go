@@ -20,7 +20,7 @@ type PullRequestRepository interface {
 	GetPullRequestsForUser(userId string) (*repoModel.RepoUserWithPullRequests, error)
 
 	// CreatePullRequest создаёт PR в БД
-	CreatePullRequest(req *serviceModel.CreatePullRequestRequest) (*repoModel.RepoPullRequest, error)
+	CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*repoModel.RepoPullRequest, error)
 
 	// MergePullRequest помечает PR как MERGED
 	MergePullRequest(pullRequestId string) (*repoModel.RepoPullRequest, error)

@@ -5,9 +5,9 @@ import (
 )
 
 type RepoPullRequest struct {
-	PullRequestId     string
+	PullRequestId     int
 	PullRequestName   string
-	AuthorId          string
+	AuthorId          int
 	Status            string
 	AssignedReviewers []string
 	CreatedAt         sql.NullTime

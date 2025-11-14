@@ -2,9 +2,9 @@ package models
 
 // CreatePullRequestRequest - запрос на создание PR
 type CreatePullRequestRequest struct {
-	PullRequestId   string `json:"pull_request_id"`
+	PullRequestId   int    `json:"pull_request_id"`
 	PullRequestName string `json:"pull_request_name"`
-	AuthorId        string `json:"author_id"`
+	AuthorId        int    `json:"author_id"`
 }
 
 // MergePullRequestRequest - запрос на merge PR
