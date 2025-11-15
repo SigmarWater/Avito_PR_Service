@@ -50,7 +50,7 @@ func (r *PostgresPullRequestsRepository) GetUser(ctx context.Context, userId int
 
 	query, args, err := builderSelect.ToSql()
 	if err != nil {
-		log.Printf("failed to create select_query from table users: %v\n", err)
+		log.Printf("failed to create select_query for get users: %v\n", err)
 		return nil, err
 	}
 
