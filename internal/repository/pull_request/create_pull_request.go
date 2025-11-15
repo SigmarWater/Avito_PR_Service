@@ -3,6 +3,7 @@ package pull_request
 import (
 	"context"
 	"database/sql"
+	"github.com/SigmarWater/Avito_PR_Service/internal/repository/converter"
 	"log"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
 
-func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*repoModel.RepoPullRequest, error) {
+func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*serviceModel.PullRequest, error) {
 	builderInsert := sq.Insert("pull_requests").
 		PlaceholderFormat(sq.Dollar).
 		Columns("pull_request_name", "author_id").
@@ -32,7 +33,7 @@ func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, 
 		return nil, err
 	}
 
-	return &repoModel.RepoPullRequest{
+	return converter.RepoPullRequestToService(&repoModel.RepoPullRequest{
 		PullRequestId:     idPullRequest,
 		PullRequestName:   req.PullRequestName,
 		AuthorId:          req.AuthorId,
@@ -40,5 +41,5 @@ func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, 
 		AssignedReviewers: []string{},
 		CreatedAt:         sql.NullTime{Time: time.Now(), Valid: true},
 		MergedAt:          sql.NullTime{},
-	}, nil
+	}), nil
 }

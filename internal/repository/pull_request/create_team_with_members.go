@@ -6,6 +6,7 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
+	"github.com/SigmarWater/Avito_PR_Service/internal/repository/converter"
 	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
 
@@ -49,7 +50,7 @@ func (r *PostgresPullRequestsRepository) InsertTeamIdWithUserId(ctx context.Cont
 	return nil
 }
 
-func (r *PostgresPullRequestsRepository) CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*repoModel.RepoTeam, error) {
+func (r *PostgresPullRequestsRepository) CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*serviceModel.Team, error) {
 	builderInsert := sq.Insert("teams").
 		PlaceholderFormat(sq.Dollar).
 		Columns("team_name").
@@ -84,9 +85,9 @@ func (r *PostgresPullRequestsRepository) CreateTeamWithMembers(ctx context.Conte
 		}
 	}
 
-	return &repoModel.RepoTeam{
+	return converter.RepoTeamToService(&repoModel.RepoTeam{
 		TeamId:   idTeam,
 		TeamName: team.TeamName,
 		Members:  repoMembers,
-	}, nil
+	}), nil
 }

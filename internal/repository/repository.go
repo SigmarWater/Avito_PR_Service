@@ -9,22 +9,22 @@ import (
 
 type PullRequestRepository interface {
 	// CreateTeamWithMembers создаёт команду с участниками (создаёт/обновляет пользователей)
-	CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*repoModel.RepoTeam, error)
+	CreateTeamWithMembers(ctx context.Context, team *serviceModel.Team) (*serviceModel.Team, error)
 
 	// GetTeamWithMembers получает команду с участниками
-	GetTeamWithMembers(ctx context.Context, teamName string) (*repoModel.RepoTeam, error)
+	GetTeamWithMembers(ctx context.Context, teamName string) (*serviceModel.Team, error)
 
 	// SetIsActive устанавливает флаг активности пользователя
-	SetIsActive(ctx context.Context, userId int, isActive bool) (*repoModel.RepoUser, error)
+	SetIsActive(ctx context.Context, userId int, isActive bool) (*serviceModel.User, error)
 
 	// GetPullRequestsForUser получает PR'ы, где пользователь назначен ревьювером
-	GetPullRequestsForUser(ctx context.Context, userId int) (*repoModel.RepoUserWithPullRequests, error)
+	GetPullRequestsForUser(ctx context.Context, userId int) (*serviceModel.UserWithPullRequests, error)
 
 	// CreatePullRequest создаёт PR в БД
-	CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*repoModel.RepoPullRequest, error)
+	CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*serviceModel.PullRequest, error)
 
 	// MergePullRequest помечает PR как MERGED
-	MergePullRequest(ctx context.Context, pullRequestId int) (*repoModel.RepoPullRequest, error)
+	MergePullRequest(ctx context.Context, pullRequestId int) (*serviceModel.PullRequest, error)
 
 	// GetPullRequest получает PR по ID
 	GetPullRequest(ctx context.Context, pullRequestId int) (*repoModel.RepoPullRequest, error)

@@ -9,7 +9,7 @@ import (
 	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
 
-func repoTeamToService(team *repoModel.RepoTeam) *serviceModel.Team {
+func RepoTeamToService(team *repoModel.RepoTeam) *serviceModel.Team {
 	if team == nil {
 		return nil
 	}
@@ -29,7 +29,7 @@ func repoTeamToService(team *repoModel.RepoTeam) *serviceModel.Team {
 	}
 }
 
-func serviceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
+func ServiceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
 	if team == nil {
 		return nil
 	}
@@ -53,7 +53,7 @@ func serviceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
 	}
 }
 
-func repoUserToService(user *repoModel.RepoUser) *serviceModel.User {
+func RepoUserToService(user *repoModel.RepoUser) *serviceModel.User {
 	if user == nil {
 		return nil
 	}
@@ -66,7 +66,7 @@ func repoUserToService(user *repoModel.RepoUser) *serviceModel.User {
 	}
 }
 
-func serviceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
+func ServiceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
 	if user == nil {
 		return nil
 	}
@@ -82,7 +82,7 @@ func serviceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
 	}
 }
 
-func repoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests) *serviceModel.UserWithPullRequests {
+func RepoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests) *serviceModel.UserWithPullRequests {
 	if user == nil {
 		return nil
 	}
@@ -98,7 +98,7 @@ func repoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests)
 	}
 }
 
-func repoPullRequestToService(pr *repoModel.RepoPullRequest) *serviceModel.PullRequest {
+func RepoPullRequestToService(pr *repoModel.RepoPullRequest) *serviceModel.PullRequest {
 	if pr == nil {
 		return nil
 	}
@@ -114,7 +114,7 @@ func repoPullRequestToService(pr *repoModel.RepoPullRequest) *serviceModel.PullR
 	}
 }
 
-func servicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullRequest {
+func ServicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullRequest {
 	if pr == nil {
 		return nil
 	}
@@ -138,7 +138,7 @@ func servicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullR
 	}
 }
 
-func repoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceModel.PullRequestShort {
+func RepoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceModel.PullRequestShort {
 	return serviceModel.PullRequestShort{
 		PullRequestId:   intToString(pr.PullRequestId),
 		PullRequestName: pr.PullRequestName,
@@ -147,7 +147,7 @@ func repoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceMod
 	}
 }
 
-func servicePullRequestShortToRepo(pr serviceModel.PullRequestShort) repoModel.RepoPullRequestShort {
+func ServicePullRequestShortToRepo(pr serviceModel.PullRequestShort) repoModel.RepoPullRequestShort {
 	pullRequestId, _ := stringToInt(pr.PullRequestId)
 	authorId, _ := stringToInt(pr.AuthorId)
 	return repoModel.RepoPullRequestShort{

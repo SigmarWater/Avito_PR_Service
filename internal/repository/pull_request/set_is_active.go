@@ -3,13 +3,14 @@ package pull_request
 import (
 	"context"
 	"errors"
+	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
+	"github.com/SigmarWater/Avito_PR_Service/internal/repository/converter"
 	"log"
 
 	sq "github.com/Masterminds/squirrel"
-	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
 
-func (r *PostgresPullRequestsRepository) SetIsActive(ctx context.Context, userId int, isActive bool) (*repoModel.RepoUser, error) {
+func (r *PostgresPullRequestsRepository) SetIsActive(ctx context.Context, userId int, isActive bool) (*serviceModel.User, error) {
 	builderUpdate := sq.Update("users").
 		Where(sq.Eq{"user_id": userId}).
 		Set("is_active", isActive)
@@ -32,5 +33,7 @@ func (r *PostgresPullRequestsRepository) SetIsActive(ctx context.Context, userId
 		return nil, errors.New("user not found")
 	}
 
-	return r.GetUser(ctx, userId)
+	user, err := r.GetUser(ctx, userId)
+
+	return converter.RepoUserToService(user), err
 }

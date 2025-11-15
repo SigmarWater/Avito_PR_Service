@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
+	"github.com/SigmarWater/Avito_PR_Service/internal/repository/converter"
 	"log"
 
 	sq "github.com/Masterminds/squirrel"
@@ -72,7 +74,7 @@ func (r *PostgresPullRequestsRepository) GetUser(ctx context.Context, userId int
 	return &user, nil
 }
 
-func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context, teamName string) (*repoModel.RepoTeam, error) {
+func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context, teamName string) (*serviceModel.Team, error) {
 	// Используем JOIN для получения команды и всех пользователей одним запросом
 	builderSelect := sq.Select("t.team_id", "t.team_name", "u.user_id", "u.username", "u.is_active").
 		PlaceholderFormat(sq.Dollar).
@@ -131,9 +133,9 @@ func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context,
 		return nil, fmt.Errorf("team %v is not found", teamName)
 	}
 
-	return &repoModel.RepoTeam{
+	return converter.RepoTeamToService(&repoModel.RepoTeam{
 		TeamId:   teamId,
 		TeamName: teamNameFromDB,
 		Members:  members,
-	}, nil
+	}), nil
 }
