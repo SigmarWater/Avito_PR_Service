@@ -2,6 +2,7 @@ package pull_request
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 
@@ -38,6 +39,9 @@ func (r *PostgresPullRequestsRepository) GetPullRequest(ctx context.Context, pul
 		&pullRequest.CreatedAt)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("pull request %d is not found", pullRequestId)
+		}
 		return nil, fmt.Errorf("failed scan pullRequest: %w", err)
 	}
 	return pullRequest, nil

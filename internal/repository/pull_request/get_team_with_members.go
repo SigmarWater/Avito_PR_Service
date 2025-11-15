@@ -36,6 +36,11 @@ func (r *PostgresPullRequestsRepository) GetIdUsersFromTeam(ctx context.Context,
 			return nil, err
 		}
 
+		if err := rows.Err(); err != nil {
+			log.Printf("error iterating rows: %v\n", err)
+			return nil, err
+		}
+
 		membersId = append(membersId, idUser)
 	}
 
@@ -57,6 +62,9 @@ func (r *PostgresPullRequestsRepository) GetUser(ctx context.Context, userId int
 	var user repoModel.RepoUser
 
 	if err := r.pool.QueryRow(ctx, query, args...).Scan(&user.UserId, &user.Username, &user.IsActive); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("user %d is not found", userId)
+		}
 		log.Printf("failed to select from table users: %v\n", err)
 		return nil, err
 	}
@@ -111,6 +119,11 @@ func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context,
 				IsActive: isActive.Bool,
 			})
 		}
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Printf("error iterating rows: %v\n", err)
+		return nil, err
 	}
 
 	if !teamFound {
