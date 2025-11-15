@@ -8,6 +8,6 @@ type RepoUser struct {
 
 // RepoUserWithPullRequests используется для GetPullRequestsForUser
 type RepoUserWithPullRequests struct {
-	UserId       string
+	UserId       int
 	PullRequests []RepoPullRequestShort
 }

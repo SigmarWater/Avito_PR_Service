@@ -15,8 +15,8 @@ type RepoPullRequest struct {
 }
 
 type RepoPullRequestShort struct {
-	PullRequestId   string
+	PullRequestId   int
 	PullRequestName string
-	AuthorId        string
+	AuthorId        int
 	Status          string
 }

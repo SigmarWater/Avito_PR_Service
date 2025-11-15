@@ -2,6 +2,7 @@ package converter
 
 import (
 	"database/sql"
+	"strconv"
 	"time"
 
 	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
@@ -16,7 +17,7 @@ func repoTeamToService(team *repoModel.RepoTeam) *serviceModel.Team {
 	members := make([]serviceModel.TeamMember, len(team.Members))
 	for i, member := range team.Members {
 		members[i] = serviceModel.TeamMember{
-			UserId:   member.UserId,
+			UserId:   intToString(member.UserId),
 			Username: member.Username,
 			IsActive: member.IsActive,
 		}
@@ -33,12 +34,15 @@ func serviceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
 		return nil
 	}
 
-	members := make([]repoModel.RepoUser, len(team.Members))
+	members := make([]*repoModel.RepoUser, len(team.Members))
 	for i, member := range team.Members {
-		members[i] = repoModel.RepoUser{
-			UserId:   member.UserId,
+		userId, err := stringToInt(member.UserId)
+		if err != nil {
+			return nil
+		}
+		members[i] = &repoModel.RepoUser{
+			UserId:   userId,
 			Username: member.Username,
-			TeamName: team.TeamName,
 			IsActive: member.IsActive,
 		}
 	}
@@ -55,9 +59,9 @@ func repoUserToService(user *repoModel.RepoUser) *serviceModel.User {
 	}
 
 	return &serviceModel.User{
-		UserId:   user.UserId,
+		UserId:   intToString(user.UserId),
 		Username: user.Username,
-		TeamName: user.TeamName,
+		TeamName: "", // TeamName не хранится в RepoUser, нужно получать отдельно
 		IsActive: user.IsActive,
 	}
 }
@@ -67,10 +71,13 @@ func serviceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
 		return nil
 	}
 
+	userId, err := stringToInt(user.UserId)
+	if err != nil {
+		return nil
+	}
 	return &repoModel.RepoUser{
-		UserId:   user.UserId,
+		UserId:   userId,
 		Username: user.Username,
-		TeamName: user.TeamName,
 		IsActive: user.IsActive,
 	}
 }
@@ -86,7 +93,7 @@ func repoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests)
 	}
 
 	return &serviceModel.UserWithPullRequests{
-		UserId:       user.UserId,
+		UserId:       intToString(user.UserId),
 		PullRequests: prs,
 	}
 }
@@ -97,9 +104,9 @@ func repoPullRequestToService(pr *repoModel.RepoPullRequest) *serviceModel.PullR
 	}
 
 	return &serviceModel.PullRequest{
-		PullRequestId:     pr.PullRequestId,
+		PullRequestId:     intToString(pr.PullRequestId),
 		PullRequestName:   pr.PullRequestName,
-		AuthorId:          pr.AuthorId,
+		AuthorId:          intToString(pr.AuthorId),
 		Status:            pr.Status,
 		AssignedReviewers: cloneStrings(pr.AssignedReviewers),
 		CreatedAt:         nullTimeToPtr(pr.CreatedAt),
@@ -112,10 +119,18 @@ func servicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullR
 		return nil
 	}
 
+	pullRequestId, err := stringToInt(pr.PullRequestId)
+	if err != nil {
+		return nil
+	}
+	authorId, err := stringToInt(pr.AuthorId)
+	if err != nil {
+		return nil
+	}
 	return &repoModel.RepoPullRequest{
-		PullRequestId:     pr.PullRequestId,
+		PullRequestId:     pullRequestId,
 		PullRequestName:   pr.PullRequestName,
-		AuthorId:          pr.AuthorId,
+		AuthorId:          authorId,
 		Status:            pr.Status,
 		AssignedReviewers: cloneStrings(pr.AssignedReviewers),
 		CreatedAt:         timePtrToNull(pr.CreatedAt),
@@ -125,18 +140,20 @@ func servicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullR
 
 func repoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceModel.PullRequestShort {
 	return serviceModel.PullRequestShort{
-		PullRequestId:   pr.PullRequestId,
+		PullRequestId:   intToString(pr.PullRequestId),
 		PullRequestName: pr.PullRequestName,
-		AuthorId:        pr.AuthorId,
+		AuthorId:        intToString(pr.AuthorId),
 		Status:          pr.Status,
 	}
 }
 
 func servicePullRequestShortToRepo(pr serviceModel.PullRequestShort) repoModel.RepoPullRequestShort {
+	pullRequestId, _ := stringToInt(pr.PullRequestId)
+	authorId, _ := stringToInt(pr.AuthorId)
 	return repoModel.RepoPullRequestShort{
-		PullRequestId:   pr.PullRequestId,
+		PullRequestId:   pullRequestId,
 		PullRequestName: pr.PullRequestName,
-		AuthorId:        pr.AuthorId,
+		AuthorId:        authorId,
 		Status:          pr.Status,
 	}
 }
@@ -168,4 +185,14 @@ func timePtrToNull(t *time.Time) sql.NullTime {
 		Time:  *t,
 		Valid: true,
 	}
+}
+
+// intToString конвертирует int в string
+func intToString(i int) string {
+	return strconv.Itoa(i)
+}
+
+// stringToInt конвертирует string в int
+func stringToInt(s string) (int, error) {
+	return strconv.Atoi(s)
 }

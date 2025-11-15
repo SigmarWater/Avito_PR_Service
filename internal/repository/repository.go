@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	serviceModel "github.com/SigmarWater/Avito_PR_Service/internal/models"
 	repoModel "github.com/SigmarWater/Avito_PR_Service/internal/repository/models"
 )
@@ -17,29 +18,29 @@ type PullRequestRepository interface {
 	SetIsActive(ctx context.Context, userId int, isActive bool) (*repoModel.RepoUser, error)
 
 	// GetPullRequestsForUser получает PR'ы, где пользователь назначен ревьювером
-	GetPullRequestsForUser(userId string) (*repoModel.RepoUserWithPullRequests, error)
+	GetPullRequestsForUser(ctx context.Context, userId int) (*repoModel.RepoUserWithPullRequests, error)
 
 	// CreatePullRequest создаёт PR в БД
 	CreatePullRequest(ctx context.Context, req *serviceModel.CreatePullRequestRequest) (*repoModel.RepoPullRequest, error)
 
 	// MergePullRequest помечает PR как MERGED
-	MergePullRequest(pullRequestId string) (*repoModel.RepoPullRequest, error)
+	MergePullRequest(ctx context.Context, pullRequestId int) (*repoModel.RepoPullRequest, error)
 
 	// GetPullRequest получает PR по ID
-	GetPullRequest(pullRequestId string) (*repoModel.RepoPullRequest, error)
+	GetPullRequest(ctx context.Context, pullRequestId int) (*repoModel.RepoPullRequest, error)
 
 	// GetActiveTeamMembers получает активных участников команды (исключая указанного пользователя)
-	GetActiveTeamMembers(teamName string, excludeUserId string) ([]*repoModel.RepoUser, error)
+	GetActiveTeamMembers(ctx context.Context, teamName string, excludeUserId int) ([]*repoModel.RepoUser, error)
 
 	// GetUserTeam получает команду пользователя
-	GetUserTeam(userId string) (string, error)
+	GetUserTeam(ctx context.Context, userId int) (string, error)
 
 	// ReassignReviewer переназначает ревьювера в PR
-	ReassignReviewer(pullRequestId string, oldUserId string, newUserId string) error
+	ReassignReviewer(ctx context.Context, pullRequestId int, oldUserId int, newUserId int) error
 
 	// IsUserReviewer проверяет, является ли пользователь ревьювером PR
-	IsUserReviewer(pullRequestId string, userId string) (bool, error)
+	IsUserReviewer(ctx context.Context, pullRequestId int, userId int) (bool, error)
 
 	// GetPRReviewers получает список ревьюверов PR
-	GetPRReviewers(pullRequestId string) ([]string, error)
+	GetPRReviewers(ctx context.Context, pullRequestId int) ([]int, error)
 }
