@@ -16,13 +16,13 @@ func (r *PostgresPullRequestsRepository) SetIsActive(ctx context.Context, userId
 
 	query, args, err := builderUpdate.ToSql()
 	if err != nil {
-		log.Printf("failed to create update_query in users table: %v\n", err)
+		log.Printf("failed to create update_query for SetIsActive: %v\n", err)
 		return nil, err
 	}
 
 	result, err := r.pool.Exec(ctx, query, args...)
 	if err != nil {
-		log.Printf("failed to update in table users: %v\n", err)
+		log.Printf("failed to set isActive: %v\n", err)
 		return nil, err
 	}
 

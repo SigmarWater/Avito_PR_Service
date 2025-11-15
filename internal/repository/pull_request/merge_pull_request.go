@@ -19,7 +19,7 @@ func (r *PostgresPullRequestsRepository) MergePullRequest(ctx context.Context, p
 
 	query, args, err := updateBuilder.ToSql()
 	if err != nil {
-		log.Printf("failed to create merged_pull_request query: %v\n", err)
+		log.Printf("failed to create update_query for MergePullRequest: %v\n", err)
 		return nil, err
 	}
 

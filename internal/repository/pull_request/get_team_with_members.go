@@ -3,6 +3,7 @@ package pull_request
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 
 	sq "github.com/Masterminds/squirrel"
@@ -74,13 +75,13 @@ func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context,
 
 	query, args, err := builderSelect.ToSql()
 	if err != nil {
-		log.Printf("failed to create select_query from table teams: %v\n", err)
+		log.Printf("failed to create select_query for GetTeamWithMembers: %v\n", err)
 		return nil, err
 	}
 
 	rows, err := r.pool.Query(ctx, query, args...)
 	if err != nil {
-		log.Printf("failed to select from table teams: %v\n", err)
+		log.Printf("failed to get team with members: %v\n", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -114,7 +115,7 @@ func (r *PostgresPullRequestsRepository) GetTeamWithMembers(ctx context.Context,
 
 	if !teamFound {
 		// Команда не найдена
-		return nil, nil
+		return nil, fmt.Errorf("team %v is not found", teamName)
 	}
 
 	return &repoModel.RepoTeam{

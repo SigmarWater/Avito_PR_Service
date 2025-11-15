@@ -22,7 +22,7 @@ func (r *PostgresPullRequestsRepository) GetPullRequest(ctx context.Context, pul
 
 	query, args, err := builderSelect.ToSql()
 	if err != nil {
-		log.Printf("failed to create get_pull_request query: %v\n", err)
+		log.Printf("failed to create select_query for GetPullRequest: %v\n", err)
 		return nil, err
 	}
 

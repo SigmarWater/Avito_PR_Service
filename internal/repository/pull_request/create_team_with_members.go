@@ -58,13 +58,13 @@ func (r *PostgresPullRequestsRepository) CreateTeamWithMembers(ctx context.Conte
 
 	query, args, err := builderInsert.ToSql()
 	if err != nil {
-		log.Printf("failed to create insert_query into table teams: %v\n", err)
+		log.Printf("failed to create insert_query for CreateTeamWithMembers: %v\n", err)
 		return nil, err
 	}
 
 	var idTeam int
 	if err := r.pool.QueryRow(ctx, query, args...).Scan(&idTeam); err != nil {
-		log.Printf("failed to insert into table teams: %v\n", err)
+		log.Printf("failed create team with members: %v\n", err)
 		return nil, err
 	}
 

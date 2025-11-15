@@ -20,7 +20,7 @@ func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, 
 
 	query, args, err := builderInsert.ToSql()
 	if err != nil {
-		log.Printf("failed to create insert_query into table pull_requests: %v\n", err)
+		log.Printf("failed to create insert_query for CreatePullRequest: %v\n", err)
 		return nil, err
 	}
 
@@ -28,7 +28,7 @@ func (r *PostgresPullRequestsRepository) CreatePullRequest(ctx context.Context, 
 	var status string
 
 	if err := r.pool.QueryRow(ctx, query, args...).Scan(&idPullRequest, &status); err != nil {
-		log.Printf("failed to insert into table pull_requests: %v\n", err)
+		log.Printf("failed to create pull request: %v\n", err)
 		return nil, err
 	}
 
