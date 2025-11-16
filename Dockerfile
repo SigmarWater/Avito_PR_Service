@@ -13,5 +13,5 @@ FROM alpine:3.22.1
 WORKDIR /app
 COPY --from=builder /app/pull_request_service /app/
 COPY .env /app/.env
-EXPOSE 8080 8080
+EXPOSE 8081 8081
 CMD ["./pull_request_service"]
