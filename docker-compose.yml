@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  pull_request_service:
+    container_name: pull_request_service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${HTTP_PORT}:8080"
+    depends_on:
+      - postgres
+    restart: always
+
   postgres:
     image: postgres:15
     container_name: PullRequestsDB

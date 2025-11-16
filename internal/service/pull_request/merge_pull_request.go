@@ -1,9 +1,14 @@
 package pull_request
 
-import "github.com/SigmarWater/Avito_PR_Service/internal/models"
+import (
+	"context"
+	"github.com/SigmarWater/Avito_PR_Service/internal/models"
+	"strconv"
+)
 
-func (s *Service) MergePullRequest(pullRequestId string) (*models.PullRequest, error) {
-	pullRequest, err := s.MergePullRequest(pullRequestId)
+func (s *Service) MergePullRequest(ctx context.Context, pullRequestId string) (*models.PullRequest, error) {
+	pullRequestIdInt, _ := strconv.Atoi(pullRequestId)
+	pullRequest, err := s.pullRequestRepository.MergePullRequest(ctx, pullRequestIdInt)
 	if err != nil {
 		return nil, err
 	}

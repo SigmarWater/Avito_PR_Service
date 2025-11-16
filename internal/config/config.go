@@ -17,3 +17,7 @@ func Load(path string) error {
 type PostgresConfig interface {
 	DSN() string
 }
+
+type HTTPConfig interface {
+	Address() string
+}

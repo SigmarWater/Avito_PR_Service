@@ -29,29 +29,29 @@ func RepoTeamToService(team *repoModel.RepoTeam) *serviceModel.Team {
 	}
 }
 
-func ServiceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
-	if team == nil {
-		return nil
-	}
-
-	members := make([]*repoModel.RepoUser, len(team.Members))
-	for i, member := range team.Members {
-		userId, err := stringToInt(member.UserId)
-		if err != nil {
-			return nil
-		}
-		members[i] = &repoModel.RepoUser{
-			UserId:   userId,
-			Username: member.Username,
-			IsActive: member.IsActive,
-		}
-	}
-
-	return &repoModel.RepoTeam{
-		TeamName: team.TeamName,
-		Members:  members,
-	}
-}
+//func ServiceTeamToRepo(team *serviceModel.Team) *repoModel.RepoTeam {
+//	if team == nil {
+//		return nil
+//	}
+//
+//	members := make([]*repoModel.RepoUser, len(team.Members))
+//	for i, member := range team.Members {
+//		userId, err := stringToInt(member.UserId)
+//		if err != nil {
+//			return nil
+//		}
+//		members[i] = &repoModel.RepoUser{
+//			UserId:   userId,
+//			Username: member.Username,
+//			IsActive: member.IsActive,
+//		}
+//	}
+//
+//	return &repoModel.RepoTeam{
+//		TeamName: team.TeamName,
+//		Members:  members,
+//	}
+//}
 
 func RepoUserToService(user *repoModel.RepoUser) *serviceModel.User {
 	if user == nil {
@@ -66,21 +66,21 @@ func RepoUserToService(user *repoModel.RepoUser) *serviceModel.User {
 	}
 }
 
-func ServiceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
-	if user == nil {
-		return nil
-	}
-
-	userId, err := stringToInt(user.UserId)
-	if err != nil {
-		return nil
-	}
-	return &repoModel.RepoUser{
-		UserId:   userId,
-		Username: user.Username,
-		IsActive: user.IsActive,
-	}
-}
+//func ServiceUserToRepo(user *serviceModel.User) *repoModel.RepoUser {
+//	if user == nil {
+//		return nil
+//	}
+//
+//	userId, err := stringToInt(user.UserId)
+//	if err != nil {
+//		return nil
+//	}
+//	return &repoModel.RepoUser{
+//		UserId:   userId,
+//		Username: user.Username,
+//		IsActive: user.IsActive,
+//	}
+//}
 
 func RepoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests) *serviceModel.UserWithPullRequests {
 	if user == nil {
@@ -89,7 +89,7 @@ func RepoUserWithPullRequestsToService(user *repoModel.RepoUserWithPullRequests)
 
 	prs := make([]serviceModel.PullRequestShort, len(user.PullRequests))
 	for i, pr := range user.PullRequests {
-		prs[i] = repoPullRequestShortToService(pr)
+		prs[i] = RepoPullRequestShortToService(pr)
 	}
 
 	return &serviceModel.UserWithPullRequests{
@@ -114,29 +114,29 @@ func RepoPullRequestToService(pr *repoModel.RepoPullRequest) *serviceModel.PullR
 	}
 }
 
-func ServicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullRequest {
-	if pr == nil {
-		return nil
-	}
-
-	pullRequestId, err := stringToInt(pr.PullRequestId)
-	if err != nil {
-		return nil
-	}
-	authorId, err := stringToInt(pr.AuthorId)
-	if err != nil {
-		return nil
-	}
-	return &repoModel.RepoPullRequest{
-		PullRequestId:     pullRequestId,
-		PullRequestName:   pr.PullRequestName,
-		AuthorId:          authorId,
-		Status:            pr.Status,
-		AssignedReviewers: cloneStrings(pr.AssignedReviewers),
-		CreatedAt:         timePtrToNull(pr.CreatedAt),
-		MergedAt:          timePtrToNull(pr.MergedAt),
-	}
-}
+//func ServicePullRequestToRepo(pr *serviceModel.PullRequest) *repoModel.RepoPullRequest {
+//	if pr == nil {
+//		return nil
+//	}
+//
+//	pullRequestId, err := stringToInt(pr.PullRequestId)
+//	if err != nil {
+//		return nil
+//	}
+//	authorId, err := stringToInt(pr.AuthorId)
+//	if err != nil {
+//		return nil
+//	}
+//	return &repoModel.RepoPullRequest{
+//		PullRequestId:     pullRequestId,
+//		PullRequestName:   pr.PullRequestName,
+//		AuthorId:          authorId,
+//		Status:            pr.Status,
+//		AssignedReviewers: cloneStrings(pr.AssignedReviewers),
+//		CreatedAt:         timePtrToNull(pr.CreatedAt),
+//		MergedAt:          timePtrToNull(pr.MergedAt),
+//	}
+//}
 
 func RepoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceModel.PullRequestShort {
 	return serviceModel.PullRequestShort{
@@ -147,16 +147,16 @@ func RepoPullRequestShortToService(pr repoModel.RepoPullRequestShort) serviceMod
 	}
 }
 
-func ServicePullRequestShortToRepo(pr serviceModel.PullRequestShort) repoModel.RepoPullRequestShort {
-	pullRequestId, _ := stringToInt(pr.PullRequestId)
-	authorId, _ := stringToInt(pr.AuthorId)
-	return repoModel.RepoPullRequestShort{
-		PullRequestId:   pullRequestId,
-		PullRequestName: pr.PullRequestName,
-		AuthorId:        authorId,
-		Status:          pr.Status,
-	}
-}
+//func ServicePullRequestShortToRepo(pr serviceModel.PullRequestShort) repoModel.RepoPullRequestShort {
+//	pullRequestId, _ := stringToInt(pr.PullRequestId)
+//	authorId, _ := stringToInt(pr.AuthorId)
+//	return repoModel.RepoPullRequestShort{
+//		PullRequestId:   pullRequestId,
+//		PullRequestName: pr.PullRequestName,
+//		AuthorId:        authorId,
+//		Status:          pr.Status,
+//	}
+//}
 
 func cloneStrings(src []string) []string {
 	if len(src) == 0 {
@@ -176,16 +176,16 @@ func nullTimeToPtr(t sql.NullTime) *time.Time {
 	return nil
 }
 
-func timePtrToNull(t *time.Time) sql.NullTime {
-	if t == nil {
-		return sql.NullTime{}
-	}
-
-	return sql.NullTime{
-		Time:  *t,
-		Valid: true,
-	}
-}
+//func timePtrToNull(t *time.Time) sql.NullTime {
+//	if t == nil {
+//		return sql.NullTime{}
+//	}
+//
+//	return sql.NullTime{
+//		Time:  *t,
+//		Valid: true,
+//	}
+//}
 
 // intToString конвертирует int в string
 func intToString(i int) string {
@@ -193,6 +193,6 @@ func intToString(i int) string {
 }
 
 // stringToInt конвертирует string в int
-func stringToInt(s string) (int, error) {
-	return strconv.Atoi(s)
-}
+//func stringToInt(s string) (int, error) {
+//	return strconv.Atoi(s)
+//}

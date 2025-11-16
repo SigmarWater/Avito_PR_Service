@@ -1,6 +1,7 @@
 package pull_request
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/SigmarWater/Avito_PR_Service/internal/models"
 	"github.com/go-chi/render"
@@ -14,7 +15,8 @@ func (i *Implementation) CreatePullRequest(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	pullRequestService, err := i.PullRequestService.CreatePullRequest(&pullRequest)
+	ctx := context.Background()
+	pullRequestService, err := i.PullRequestService.CreatePullRequest(ctx, &pullRequest)
 	if err != nil {
 		http.Error(w, "Invalid create pull request", http.StatusInternalServerError)
 	}

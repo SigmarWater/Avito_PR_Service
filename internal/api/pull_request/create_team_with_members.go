@@ -1,6 +1,7 @@
 package pull_request
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/SigmarWater/Avito_PR_Service/internal/models"
 	"github.com/go-chi/render"
@@ -14,7 +15,8 @@ func (i *Implementation) CreateTeamWithMembers(w http.ResponseWriter, r *http.Re
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 	}
 
-	teamService, err := i.PullRequestService.CreateTeamWithMembers(&team)
+	ctx := context.Background()
+	teamService, err := i.PullRequestService.CreateTeamWithMembers(ctx, &team)
 	if err != nil {
 		http.Error(w, "Invalid create team with members", http.StatusInternalServerError)
 	}

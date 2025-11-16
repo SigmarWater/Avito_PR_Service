@@ -1,9 +1,12 @@
 package pull_request
 
-import "github.com/SigmarWater/Avito_PR_Service/internal/models"
+import (
+	"context"
+	"github.com/SigmarWater/Avito_PR_Service/internal/models"
+)
 
-func (s *Service) CreateTeamWithMembers(req *models.Team) (*models.Team, error) {
-	team, err := s.CreateTeamWithMembers(req)
+func (s *Service) CreateTeamWithMembers(ctx context.Context, req *models.Team) (*models.Team, error) {
+	team, err := s.pullRequestRepository.CreateTeamWithMembers(ctx, req)
 	if err != nil {
 		return nil, err
 	}

@@ -35,8 +35,8 @@ type PullRequestRepository interface {
 	// GetUserTeam получает команду пользователя
 	GetUserTeam(ctx context.Context, userId int) (string, error)
 
-	// ReassignReviewer переназначает ревьювера в PR
-	ReassignReviewer(ctx context.Context, pullRequestId int, oldUserId int, newUserId int) error
+	//// ReassignReviewer переназначает ревьювера в PR
+	//ReassignReviewer(ctx context.Context, pullRequestId int, oldUserId int, newUserId int) error
 
 	// IsUserReviewer проверяет, является ли пользователь ревьювером PR
 	IsUserReviewer(ctx context.Context, pullRequestId int, userId int) (bool, error)

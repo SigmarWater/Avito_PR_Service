@@ -2,12 +2,15 @@ package env
 
 import (
 	"errors"
+	"github.com/SigmarWater/Avito_PR_Service/internal/config"
 	"os"
 )
 
 const (
 	postgresDSNEnvName = "POSTGRES_DSN"
 )
+
+var _ config.PostgresConfig = (*RepositoryConfig)(nil)
 
 type RepositoryConfig struct {
 	dsn string

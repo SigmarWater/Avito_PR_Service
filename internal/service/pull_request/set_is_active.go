@@ -1,9 +1,14 @@
 package pull_request
 
-import "github.com/SigmarWater/Avito_PR_Service/internal/models"
+import (
+	"context"
+	"github.com/SigmarWater/Avito_PR_Service/internal/models"
+	"strconv"
+)
 
-func (s *Service) SetIsActive(userId string, isActive bool) (*models.User, error) {
-	user, err := s.SetIsActive(userId, isActive)
+func (s *Service) SetIsActive(ctx context.Context, userId string, isActive bool) (*models.User, error) {
+	userIdInt, _ := strconv.Atoi(userId)
+	user, err := s.pullRequestRepository.SetIsActive(ctx, userIdInt, isActive)
 	if err != nil {
 		return nil, err
 	}

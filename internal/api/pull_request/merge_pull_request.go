@@ -1,6 +1,7 @@
 package pull_request
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/SigmarWater/Avito_PR_Service/internal/models"
 	"github.com/go-chi/render"
@@ -15,7 +16,8 @@ func (i *Implementation) MergePullRequest(w http.ResponseWriter, r *http.Request
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 	}
 
-	pullRequest, err := i.PullRequestService.MergePullRequest(req.PullRequestId)
+	ctx := context.Background()
+	pullRequest, err := i.PullRequestService.MergePullRequest(ctx, req.PullRequestId)
 	if err != nil {
 		http.Error(w, "Invalid merge pull request", http.StatusInternalServerError)
 	}
